@@ -8,3 +8,7 @@ pydantic==2.10.3
 python-dotenv==1.0.0
 arxiv==2.1.0
 wikipedia==1.4.0
+dotenv==1.0.0
+langchain-groq==0.2.12
+langchain-google-genai==0.2.12
+langchain-ollama==0.2.12
