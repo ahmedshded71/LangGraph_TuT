@@ -6,7 +6,8 @@ from LLMEngein import LLMProvidorFactory
 from dotenv import load_dotenv
 import os
 load_dotenv()
-from langgraph.prebuilt import ToolNode ,tool_condition
+from langgraph.prebuilt import ToolNode
+from langgraph.prebuilt import tool_condition
 from IPython.display import display, Image
 
 

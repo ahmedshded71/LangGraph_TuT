@@ -19,4 +19,4 @@ class ChatBootAgent():
 if __name__ == "__main__":
     agent = ChatBootAgent()
     agent.ViewGraph()
-    agent.Run("Hello, how are you?")
+    agent.Run("Hello, how what the latest AI news?")

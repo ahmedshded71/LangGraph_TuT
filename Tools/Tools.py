@@ -10,7 +10,7 @@ class Tools():
 
     tavily_search = TavilySearchResults(
         max_results=3,
-        tavily_api_key=os.getenv("TAVILY_API_KEY")
+        tavily_api_key=os.getenv("TAVILT_API_KEY")
     ) 
 
     arxiv_search = ArxivQueryRun(
