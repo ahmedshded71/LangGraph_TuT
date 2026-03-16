@@ -21,9 +21,15 @@ class ChatBootAgent():
 if __name__ == "__main__":
     agent = ChatBootAgent()
     agent.ViewGraph()
+<<<<<<< HEAD
     result=agent.Run("Hello")
     print("\n" + "="*50)
     print("AGENTIC AI EXECUTION TRACE")
+=======
+    result=agent.Run("Hello, how what the latest  trendy paper in agentic ai with network?")
+    print("\n" + "="*50)
+    print("📌 AGENTIC AI EXECUTION TRACE")
+>>>>>>> 9394d790014017aa08658ce8fc03c6e381b8fac1
     print("="*50 + "\n")
 
     for msg in result["messages"]:
@@ -41,7 +47,11 @@ if __name__ == "__main__":
                 print(f"🤖 AI RESPONSE:\n{msg.content}\n")
                 
         elif role == "TOOL":
+<<<<<<< HEAD
             print(f"TOOL OUTPUT (From {msg.name}):")
+=======
+            print(f"🛠️ TOOL OUTPUT (From {msg.name}):")
+>>>>>>> 9394d790014017aa08658ce8fc03c6e381b8fac1
             content = msg.content[:300] + "..." if len(msg.content) > 300 else msg.content
             print(f"{content}\n")
 

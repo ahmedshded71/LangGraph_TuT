@@ -41,18 +41,4 @@ class ChatAgentGraph():
         self.graph = builder.compile() 
 
     def Run(self, query: str):
-        system_msg = SystemMessage(content=(
-        "You are a helpful assistant. "
-        "For greetings (like Hello, Hi) or general conversation, answer directly. "
-        "Use tools ONLY when the user asks for news, specific facts, or academic papers."
-    ))
-        
-        inputs = {"messages": [system_msg, HumanMessage(content=query)]}
-        
-        return self.graph.invoke(inputs)
-
-    def ViewGraph(self):
-        try:
-            print(self.graph.get_graph().print_ascii())
-        except:
-            print("Nodes:", self.graph.nodes)
+        return self.graph.run(query)
