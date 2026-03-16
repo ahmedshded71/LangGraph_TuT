@@ -7,31 +7,44 @@ from dotenv import load_dotenv
 import os
 load_dotenv()
 from langgraph.prebuilt import ToolNode
-from langgraph.prebuilt import tool_condition
+# from langgraph.prebuilt.tool_node import tool_condition
 from IPython.display import display, Image
+from IPython.display import display, Markdown
+
 
 
 tools = Tools().GetTools()
-llm = LLMProvidorFactory(llmProvidorName=os.getenv("PROVIDER")).GetLLM()
-llm_with_tools = llm.bind_tools(tools)
-def ToolCallingLLM(state:State):
-    return {"messages": [llm_with_tools.invoke(state.messages)]}
+Providor = LLMProvidorFactory(llmProvidorName=os.getenv("PROVIDOR").strip().upper())
+llm_engin=Providor.GetLLMProvidor()
+llm_with_tools = llm_engin.bind_tools(tools)
+def LLMToolCalling(state:State):
+    messages = state["messages"] 
+    response = llm_with_tools.invoke(messages)
+    return {"messages": [response]}
 
 class ChatAgentGraph():
     def __init__(self):
-        self.graph = StateGraph(State)
-        # build the graph
-        self.graph.add_node("ToolCallingLLM", ToolCallingLLM)
-        self.graph.add_edge("Tools", ToolNode(tools))
-        # add conditional edges
-        self.graph.add_edge(START, "ToolCallingLLM")
-        self.graph.add_conditional_edges("ToolCallingLLM", tool_condition)
-        self.graph.add_edge("Tools", "ToolCallingLLM")
-        # compile the graph
-        self.graph = self.graph.compile()
-    
-    def ViewGraph(self):
-        return display(Image(self.graph.get_graph().draw_mermaid_png()))
+        builder = StateGraph(State)
+
+        builder.add_node("LLMToolCalling", LLMToolCalling)
+        builder.add_node("Tools", ToolNode(tools)) 
+
+        builder.add_edge(START, "LLMToolCalling")
+        builder.add_edge("Tools", "LLMToolCalling")
+
+        builder.add_conditional_edges(
+            "LLMToolCalling",
+            lambda state: "Tools" if state["messages"][-1].tool_calls else END
+        )
+        
+        self.graph = builder.compile() 
 
     def Run(self, query: str):
-        return self.graph.run(query)
+        inputs = {"messages": [("user", query)]}
+        return self.graph.invoke(inputs)
+
+    def ViewGraph(self):
+        try:
+            print(self.graph.get_graph().print_ascii())
+        except:
+            print("Nodes:", self.graph.nodes)
